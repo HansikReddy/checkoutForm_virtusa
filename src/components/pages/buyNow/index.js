@@ -285,7 +285,7 @@ function BuyNow() {
                   <p className="fw-bold">Discount</p>
                 </div>
                 <div className="col-sm-4 fw-bold text-end">
-                  {totalDiscount}$
+                  {typeof totalDiscount === "number" ? totalDiscount.toFixed(2) : totalDiscount}$
                 </div>
               </div>
               <div className="row p-2 totalbox">
