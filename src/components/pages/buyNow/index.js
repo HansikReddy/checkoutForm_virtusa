@@ -28,13 +28,19 @@ function BuyNow() {
     fname: '',
     lname: '',
     mobile: '',
+    email: '',
     address: '',
     cardNO: '',
     cardName: '',
     expiration: '',
     cvv: '',
   })
-
+  const [billingDetails, setBillingDetails] = useState({
+    fname1: '',
+    lname1: '',
+    mobile1: '',
+    address1: '',
+  })
   const nav = useNavigate()
   const [disabled, setDisabled] = useState(false)
   const [wishlistrender, setWishlistrender] = useState([])
@@ -44,11 +50,17 @@ function BuyNow() {
   const [totalDiscount, setTotalDiscount] = useState('')
   const [totalPrice, setTotalPrice] = useState('')
   const [addressError, setAddressError] = useState(false)
+  const [billingCheck, setBillingCheck] = useState(false)
+  const [shippingCheck, setShippingCheck] = useState(false)
+
+
+
 
   const [errors, setErrors] = useState({
     fname: '',
     lname: '',
     mobile: '',
+    email: '',
     cardNO: '',
     cardName: '',
     expiration: '',
@@ -101,6 +113,7 @@ function BuyNow() {
         fname: '',
         lname: '',
         mobile: '',
+        email: '',
         address: '',
         cardNO: '',
         cardName: '',
@@ -112,7 +125,7 @@ function BuyNow() {
 
 
   }
-  console.log(orderDetails);
+
 
   const validateField = (fieldName, value) => {
     switch (fieldName) {
@@ -125,6 +138,9 @@ function BuyNow() {
       case 'mobile':
         const regexMobile = /^\+?[1-9][0-9]{7,14}$/
         return value && !regexMobile.test(value) ? 'Invalid mobile number' : ''
+      case 'email':
+        const regexEmail = /^\S+@\S+\.\S+$/
+        return value && !regexEmail.test(value) ? 'Invalid email' : ''
       case 'address':
         const addressFeild = /^[a-zA-Z\s]*$/
         // const addressFeild = /^\d+\s+[a-zA-Z\s]+\s+\w{2,}(?:\s+\d{5})?$/
@@ -183,6 +199,16 @@ function BuyNow() {
       ? setWishlistrender(wishList)
       : setWishlistrender(shippingDetails.productDetails)
   }, [])
+
+  const handleCheckBox = () => {
+    setBillingCheck(true)
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  const handleCheckBox1 = () => {
+    setShippingCheck(true)
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
 
   return (
     <div className="main-body" style={{ marginTop: '7%' }}>
@@ -274,7 +300,7 @@ function BuyNow() {
             <div className="row just-center">
               {/* <form onSubmit={handleSubmit}> */}
               <div className=" pt-2 product-section">
-                <h1>PAYMENT</h1>
+                <h1>BILLING INFORMATION</h1>
 
                 <div className="row">
                   <div className="col-6">
@@ -316,6 +342,19 @@ function BuyNow() {
                       <span style={{ color: 'red' }}>{errors.mobile}</span>
                     )}
                   </div>
+                  <div className="col-12">
+                    <InputField
+                      name="email"
+                      value={orderDetails.email}
+                      handleChange={handleChange}
+                      disabled={disabled}
+                      className={'inputfieldstyle'}
+                      labelName={'Email Id'}
+                    />
+                    {errors.email && (
+                      <span style={{ color: 'red' }}>{errors.email}</span>
+                    )}
+                  </div>
 
                   <div className="col-12">
                     <InputField
@@ -331,6 +370,94 @@ function BuyNow() {
                       <span style={{ color: 'red' }}>Enter address</span>
                     )}
                   </div>
+
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" onChange={handleCheckBox} id="flexCheckChecked" />
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Do you want this to be  your shipping information?
+                  </label>
+                </div>
+              </div>
+              {/* </form> */}
+            </div>
+          </div>
+        </div><br /><br />
+        <div className="row  ">
+          <div className="col-sm-8 ">
+            <div className="row just-center">
+              {/* <form onSubmit={handleSubmit}> */}
+              <div className=" col-sm-10 ">
+                <h1>SHIPPING INFORMATION</h1>
+
+                <div className="row">
+                  <div className="col-3">
+                    <InputField
+                      name="fname"
+                      value={billingCheck ? orderDetails.fname : billingDetails.fname1}
+                      handleChange={handleChange}
+                      disabled={disabled}
+                      className={'inputfieldstyle'}
+                      labelName={'First Name'}
+                    />
+                    {errors.fname && (
+                      <span style={{ color: 'red' }}>{errors.fname}</span>
+                    )}
+                  </div>
+                  <div className="col-3">
+                    <InputField
+                      name="lname"
+                      value={billingCheck ? orderDetails.lname : billingDetails.lname1}
+                      handleChange={handleChange}
+                      disabled={disabled}
+                      className={'inputfieldstyle'}
+                      labelName={'Last Name'}
+                    />
+                    {errors.lname && (
+                      <span style={{ color: 'red' }}>{errors.lname}</span>
+                    )}
+                  </div>
+                  <div className="col-7">
+                    <InputField
+                      name="mobile"
+                      value={billingCheck ? orderDetails.mobile : billingDetails.mobile1}
+                      handleChange={handleChange}
+                      disabled={disabled}
+                      className={'inputfieldstyle'}
+                      labelName={'Mobile no.'}
+                    />
+                    {errors.mobile && (
+                      <span style={{ color: 'red' }}>{errors.mobile}</span>
+                    )}
+                  </div>
+
+                  <div className="col-7">
+                    <InputField
+                      name="address"
+                      value={billingCheck ? orderDetails.address : billingDetails.address1}
+                      handleChange={handleChange}
+                      disabled={disabled}
+                      type="textarea"
+                      className={'inputfieldstyle textarea'}
+                      labelName={'Address'}
+                    />
+                    {addressError && (
+                      <span style={{ color: 'red' }}>Enter address</span>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+              {/* </form> */}
+            </div>
+          </div>
+          <div className="col-sm-4 ">
+            <div className="row just-center">
+              {/* <form onSubmit={handleSubmit}> */}
+              <div className=" pt-2 product-section">
+                <h1>PAYMENT</h1>
+
+                <div className="row">
                   <div className="col-12">
                     <InputField
                       name="cardNO"
